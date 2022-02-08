@@ -1,0 +1,103 @@
+pipeline {
+    agent any
+    environment {
+        APP_NAME = "app"
+        WAR_FILE = "'${APP_NAME}'.war"
+    }
+    Stages {
+        stage('Master Branch Build Deploy') {
+            when {
+                branch 'Master'
+            }
+            steps {
+                //Compile Angular
+                sh "ng build --configuration=srv-prd --base-href /'${APP_NAME}'/"
+
+                //Build .war
+                sh "grunt build_war"
+
+                //Stage and deploy artifact to PROD server
+                sh "ssh '${PRD_USR_ACCT}'@'${PRD_DEPLOY_SRV}' 'cd '${STAGE_AREA}'; mv '${WAR_FILE}' '${APP_NAME}'_`date +%Y%m%d`.war'"
+
+                sh "scp build/'${WAR_FILE}' '${PRD_USR_ACCT}'@'${PRD_DEPLOY_SRV}':/home/svc_account"
+
+                sh "ssh '${PRD_USR_ACCT}'@'${PRD_DEPLOY_SRV}' 'mv '${WAR_FILE}'; chmod 644 '${STAGE_AREA}'/'${WAR_FILE}''"
+
+                sh "ssh '${PRD_USR_ACCT}'@'${PRD_DEPLOY_SRV}' 'cd '${TOMCAT_LOC}'; rm -rf '${WAR_FILE}'; mv '${STAGE_AREA}'/'${WAR_FILE}' .'"
+            }
+        }
+        stage('Test Branch Build Deploy') {
+            when {
+                branch 'test'
+            }
+            steps {
+                //Compile Angular
+                sh "ng build --configuration=srv-tst --base-href /'${APP_NAME}'/"
+
+                //Build .war
+                sh "grunt build_war"
+
+                //Stage and deploy artifact to TEST server
+                sh "ssh '${TST_USR_ACCT}'@'${TST_DEPLOY_SRV}' 'cd '${STAGE_AREA}'; mv '${WAR_FILE}' '${APP_NAME}'_`date +%Y%m%d`.war'"
+
+                sh "scp build/'${WAR_FILE}' '${TST_USR_ACCT}'@'${TST_DEPLOY_SRV}':/home/svc_account"
+
+                sh "ssh '${TST_USR_ACCT}'@'${TST_DEPLOY_SRV}' 'mv '${WAR_FILE}'; chmod 644 '${STAGE_AREA}'/'${WAR_FILE}''"
+
+                sh "ssh '${TST_USR_ACCT}'@'${TST_DEPLOY_SRV}' 'cd '${TOMCAT_LOC}'; rm -rf '${WAR_FILE}'; mv '${STAGE_AREA}'/'${WAR_FILE}' .'"
+            }
+        }
+        stage('Develop Branch Build Deploy') {
+            when {
+                branch 'develop'
+            }
+            steps {
+                //Compile Angular
+                sh "ng build --configuration=srv-dev --base-href /'${APP_NAME}'/"
+
+                //Build .war
+                sh "grunt build_war"
+
+                //Stage and deploy artifact to DEV server
+                sh "ssh '${DEV_USR_ACCT}'@'${DEV_DEPLOY_SRV}' 'cd '${STAGE_AREA}'; mv '${WAR_FILE}' '${APP_NAME}'_`date +%Y%m%d`.war'"
+
+                sh "scp build/'${WAR_FILE}' '${DEV_USR_ACCT}'@'${DEV_DEPLOY_SRV}':/home/svc_account"
+
+                sh "ssh '${DEV_USR_ACCT}'@'${DEV_DEPLOY_SRV}' 'mv '${WAR_FILE}'; chmod 644 '${STAGE_AREA}'/'${WAR_FILE}''"
+
+                sh "ssh '${DEV_USR_ACCT}'@'${DEV_DEPLOY_SRV}' 'cd '${TOMCAT_LOC}'; rm -rf '${WAR_FILE}'; mv '${STAGE_AREA}'/'${WAR_FILE}' .'"
+            }
+        }
+    }
+
+    post {
+        sucess {
+            Mail to:"DLlist@company.com"
+            subject:"[SUCESS] - Job ${env.JOB_NAME}, Build #${env.BUILD_NUMBER}"
+            mimeType:"text/html"
+            body:"""
+                <html>
+                    <body>
+                        <h1><p style="color:green">FINISHED BUILD:</p><h1>
+                        <h3><a hef="${env.RUN_DISPLAY_URL}">Click for build #${currentBuild.id} view</a></h3>
+                        <h3><a hef="${env.RUN_DISPLAY_URL}">Click for #${currentBuild.projectName} stage view</a></h3>
+                    </body>
+                </html>
+            """
+        }
+        failure {
+            Mail to:"DLlist@company.com"
+            subject:"[FAILURE] - Buld failed on ${currentBuild.projectName}, Build #${env.BUILD_NUMBER}"
+            mimeType:"text/html"
+            body:"""
+                <html>
+                    <body>
+                        <h1><p style="color:red">FAILED BUILD:</p><h1>
+                        <h3><a hef="${env.RUN_DISPLAY_URL}">Click for build #${currentBuild.id} view</a></h3>
+                        <h3><a hef="${env.RUN_DISPLAY_URL}">Click for #${currentBuild.projectName} stage view</a></h3>
+                    </body>
+                </html>
+            """
+        }
+    }
+}
