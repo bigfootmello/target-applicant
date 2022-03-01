@@ -1,7 +1,12 @@
-from flask import Resource, reqparse, fields, marshal_with, abort
+from flask import Flask, jsonify
+from flask import current_app as app
+from flask_restful import Resource, reqparse, fields, marshal_with, abort
 from . import api
 from .models import db, Product, Location
 
+@app.route("/")
+def Index():
+    return jsonify({'Hello': 'World!'})
 
 # from flask import Flask, request
 # from flask_restful import Api, Resource, reqparse, abort, fields, marshal_with
@@ -154,10 +159,11 @@ class ReturnProductLocation(Resource):
 
         return result
 
+class Tester(Resource):
+    def get(self):
+        return jsonify({'Hello': 'World!'})
+
 
 api.add_resource(Retail, "/api/product/<int:product_id>", "/api/product/<string:product_name>")
 api.add_resource(ReturnProductLocation, "/api/product_location/<int:location_id>")
-
-
-# if __name__ == "__main__":
-#     app.run(debug=True)
+api.add_resource(Tester, "/api/")
