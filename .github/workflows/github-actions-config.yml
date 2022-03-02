@@ -32,4 +32,4 @@ jobs:
           pip install marshmallow-sqlalchemy
 
       - name: Test
-        run: python3 -m unittest discover
+        run: pytest
