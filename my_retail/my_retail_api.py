@@ -33,7 +33,7 @@ resource_fields = {
 
 
 @app.route("/")
-def Index():
+def index():
     return jsonify({'My_Retail': 'API'})
 
 
