@@ -1,0 +1,36 @@
+name: TA
+
+on:
+  push:
+    branches: [develop]
+  pull_request:
+    branches: [develop]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.9"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f ../../requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install pytest
+          pip install flask-testing
+          pip install flask-marshmallow
+          pip install marshmallow
+          pip install flask-restful
+          pip install flask-sqlalchemy
+          pip install marshmallow-sqlalchemy
+          pip install python-dotenv
+
+      - name: Test
+        run: pytest
