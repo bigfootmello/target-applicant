@@ -31,4 +31,4 @@ jobs:
           pip install flask-sqlalchemy
 
       - name: Test
-        run: pytest
+        run: python3 -m unittest discover
