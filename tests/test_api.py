@@ -1,23 +1,23 @@
 import unittest
 from tests.base_setup import BaseTestCase
 
-API_URL = "http://127.0.0.1:8000/"
-PRODUCT = {"Name": "Magic Eight Ball", "Description": "Making life decisions since 1946", "SKU": "1058L09PL6913TR2",
-           "OnlineOnly": False, "InStoreOnly": False}
-
 
 class APITestCase(BaseTestCase):
 
-    def test_1_index(self):
-        response = self.client.get(API_URL)
+    API_URL = "http://127.0.0.1:8000/"  # Need to change for testing
+    PRODUCT = {"Name": "Golf Club", "Description": "The one thing you always wanted but didn't know why",
+               "SKU": "2258L09PL6913TR2", "OnlineOnly": False, "InStoreOnly": False}
+
+    def test_index(self):
+        response = self.client.get(APITestCase.API_URL)
         self.assertEqual(response.status_code, 200)
 
-    # def test_2_get_product(self):
-    #     response = self.client.get(API_URL + "api/product/quick")
+    # def test_get_product(self):
+    #     response = self.client.get(APITestCase.API_URL + "api/product/quick")
     #     self.assertEqual(response.status_code, 200)
 
     # def test_add_product(self):
-    #     response = self.client.put(API_URL + "api/product/400", json=PRODUCT)
+    #     response = self.client.put(APITestCase.API_URL + "api/product/589", json=APITestCase.PRODUCT)
     #     self.assertEqual(response.status_code, 201)
 
     # def test_update_product(self):  # Needs work, failing
@@ -25,7 +25,7 @@ class APITestCase(BaseTestCase):
     #     response = self.client.patch(API_URL + str(product_id), query_string={"Description": "Did I say soft? Oh, it's not"})
     #     self.assertEqual(response.status_code, 204)
 
-    # def test_5_delete_product(self):
+    # def test_delete_product(self):
     #     product_id = 312
     #     response = self.client.delete(API_URL + str(product_id))
     #     self.assertEqual(response.status_code, 204)
