@@ -1,4 +1,5 @@
-from . import db
+from . import db, ma
+from marshmallow_sqlalchemy import fields
 
 
 t_inventory = db.Table('Inventory',
@@ -9,7 +10,7 @@ t_inventory = db.Table('Inventory',
 
 # Product Table
 class Product(db.Model):
-    __tablename__ = "Product"
+    #__tablename__ = "Product"
     ProductID = db.Column(db.Integer, primary_key=True, nullable=False)
     Name = db.Column(db.String(30), unique=True, nullable=False)
     Description = db.Column(db.String(5000), nullable=False)
@@ -24,7 +25,7 @@ class Product(db.Model):
 
 # Location Table
 class Location(db.Model):
-    __tablename__ = "Location"
+    #__tablename__ = "Location"
     LocationID = db.Column(db.Integer, primary_key=True, nullable=False)
     Name = db.Column(db.String(30), nullable=False)
     Address = db.Column(db.Text(), nullable=False)
@@ -34,3 +35,21 @@ class Location(db.Model):
 
     def __repr__(self):
         return f"{self.Name} - {self.Address} - {self.City} - {self.State}, {self.Zip}"
+
+
+class LocationsSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Location
+        include_fk = True
+
+
+class ProductsSchema(ma.SQLAlchemyAutoSchema):
+    inventory = ma.Nested(LocationsSchema)
+
+    class Meta:
+        model = Product
+
+
+class RelationshipSchema(ma.SQLAlchemyAutoSchema):
+    locationData = fields.Nested(LocationsSchema)
+    productsData = fields.Nested(ProductsSchema)

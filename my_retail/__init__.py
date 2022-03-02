@@ -1,11 +1,12 @@
-from unittest.mock import patch
 from flask import Flask
+from flask_marshmallow import Marshmallow
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 
 
 api = Api()
 db = SQLAlchemy()
+ma = Marshmallow()
 
 
 def create_app():
@@ -16,7 +17,8 @@ def create_app():
 
     api.init_app(app)
     db.init_app(app)
-
+    ma.init_app(app)
+    
     with app.app_context():
         from . import my_retail_api
 
