@@ -30,6 +30,7 @@ jobs:
           pip install flask-restful
           pip install flask-sqlalchemy
           pip install marshmallow-sqlalchemy
+          pip install python-dotenv
 
       - name: Test
         run: pytest
