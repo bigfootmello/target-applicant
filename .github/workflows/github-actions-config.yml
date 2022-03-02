@@ -29,6 +29,7 @@ jobs:
           pip install marshmallow
           pip install flask-restful
           pip install flask-sqlalchemy
+          pip install marshmallow-sqlalchemy
 
       - name: Test
         run: python3 -m unittest discover
