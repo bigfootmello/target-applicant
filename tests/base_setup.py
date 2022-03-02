@@ -10,6 +10,7 @@ class BaseTestCase(TestCase):
         app.config['DEBUG'] = True
         app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///DEV_RETAIL.db"
         app.config['SQLALCHEMY_ECHO'] = True
+        app.config["PRESERVE_CONTEXT_ON_EXCEPTION"] = False
         return app
 
     def setUp(self):
@@ -18,4 +19,4 @@ class BaseTestCase(TestCase):
 
     def tearDown(self):
         db.session.remove()
-        db.drop_all()
+        pass
