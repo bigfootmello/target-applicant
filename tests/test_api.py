@@ -12,9 +12,9 @@ class APITestCase(BaseTestCase):
         response = self.client.get(API_URL)
         self.assertEqual(response.status_code, 200)
 
-    def test_2_get_product(self):
-        response = self.client.get(API_URL + "api/product/quick")
-        self.assertEqual(response.status_code, 200)
+    # def test_2_get_product(self):
+    #     response = self.client.get(API_URL + "api/product/quick")
+    #     self.assertEqual(response.status_code, 200)
 
     # def test_add_product(self):
     #     response = self.client.put(API_URL + "api/product/400", json=PRODUCT)
