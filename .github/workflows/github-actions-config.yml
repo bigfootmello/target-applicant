@@ -26,6 +26,7 @@ jobs:
           pip install flask-testing
           pip install flask-marshmallow
           pip install marshmallow
+          pip install flask-restful
           if [ -f ../../requirements.txt ]; then pip install -r requirements.txt; fi
 
       - name: Test
