@@ -1,5 +1,13 @@
-name: Target BoW
-on: [push]
+name: TA
+
+on:
+  push:
+    branches: [develop]
+  pull_request:
+    branches: [develop]
+
+workflow_dispatch:
+
 jobs:
   build:
     runs-on: ubuntu-latest
