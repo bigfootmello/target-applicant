@@ -2,6 +2,7 @@ from . import db, ma
 from marshmallow_sqlalchemy import fields
 
 
+# Table to create the relationship
 t_inventory = db.Table('Inventory',
                        db.Column('ProductID', db.Integer, db.ForeignKey('product.ProductID')),
                        db.Column('LocationID', db.Integer, db.ForeignKey('location.LocationID'))
@@ -10,7 +11,6 @@ t_inventory = db.Table('Inventory',
 
 # Product Table
 class Product(db.Model):
-    #__tablename__ = "Product"
     ProductID = db.Column(db.Integer, primary_key=True, nullable=False)
     Name = db.Column(db.String(30), unique=True, nullable=False)
     Description = db.Column(db.String(5000), nullable=False)
@@ -25,7 +25,6 @@ class Product(db.Model):
 
 # Location Table
 class Location(db.Model):
-    #__tablename__ = "Location"
     LocationID = db.Column(db.Integer, primary_key=True, nullable=False)
     Name = db.Column(db.String(30), nullable=False)
     Address = db.Column(db.Text(), nullable=False)
