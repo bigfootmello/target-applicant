@@ -24,6 +24,8 @@ jobs:
           python -m pip install --upgrade pip
           pip install pytest
           pip install flask-testing
+          pip install flask-marshmallow
+          pip install marshmallow
           if [ -f ../../requirements.txt ]; then pip install -r requirements.txt; fi
 
       - name: Test
