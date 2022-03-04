@@ -12,8 +12,6 @@ ma = Marshmallow()
 def create_app():
     app = Flask(__name__)
     app.config.from_object('config.DevConfig')
-    app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///DEV_RETAIL.db"
-    app.config['SQLALCHEMY_ECHO'] = True
 
     api.init_app(app)
     db.init_app(app)

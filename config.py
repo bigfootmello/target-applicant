@@ -12,15 +12,14 @@ class Config:
 
 
 class DevConfig(Config):
-    FLASK_ENV = "development"
-    FLASK_DEBUG = True
-    SQLALCHEMY_DATABASE_URI = environ.get("SQLALCHEMY_DATABASE_URI")
-    SQLALCHEMY_ECHO = environ.get("SQLALCHEMY_ECHO")
+    ENV = "development"
+    DEBUG = True
+    SQLALCHEMY_DATABASE_URI = "sqlite:///DEV_RETAIL.db"
+    SQLALCHEMY_ECHO = True
 
 
 class ProdConfig(Config):
-    FLASK_ENV = "production"
-    FLASK_DEBUG = False 
-    SQLALCHEMY_DATABASE_URI = environ.get('sqlite:///PROD_RETAIL.db')
+    ENV = "production"
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///PROD_RETAIL.db'
     SQLALCHEMY_ECHO = False
     
