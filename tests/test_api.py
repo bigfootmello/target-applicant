@@ -4,19 +4,22 @@ from tests.base_setup import BaseTestCase
 
 class APITestCase(BaseTestCase):
 
-    API_URL = "http://127.0.0.1:8000/"  # Need to change for testing
-    PRODUCT = {"Name": "Golf Club", "Description": "The one thing you always wanted but didn't know why",
-               "SKU": "2258L09PL6913TR2", "OnlineOnly": False, "InStoreOnly": False}
+    API_URL = "http://127.0.0.1:8000/"
+    PRODUCT = {"Name": "Golf Club",
+               "Description": "The one thing you always wanted but didn't know why",
+               "SKU": "2258L09PL6913TR2",
+               "OnlineOnly": False,
+               "InStoreOnly": False}
 
-    def test_index(self):
+    def test_a_index(self):
         response = self.client.get(APITestCase.API_URL)
         self.assertEqual(response.status_code, 200)
 
-    # def test_get_product(self):
+    # def test_b_get_product(self):
     #     response = self.client.get(APITestCase.API_URL + "api/product/quick")
     #     self.assertEqual(response.status_code, 200)
 
-    # def test_add_product(self):
+    # def test_c_add_product(self):
     #     response = self.client.put(APITestCase.API_URL + "api/product/589", json=APITestCase.PRODUCT)
     #     self.assertEqual(response.status_code, 201)
 
