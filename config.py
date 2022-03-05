@@ -14,12 +14,14 @@ class Config:
 class DevConfig(Config):
     ENV = "development"
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = "sqlite:///DEV_RETAIL.db"
+    #SQLALCHEMY_DATABASE_URI = "sqlite:///DEV_RETAIL.db"
+    SQLALCHEMY_DATABASE_URI = "postgres://spbwjrwgaxozyd:498f4047086c77222827fd5e75ec3a78c129eb6a0c69dbca59a108e2647b8559@ec2-54-209-221-231.compute-1.amazonaws.com:5432/dftln3an6fc92k"
     SQLALCHEMY_ECHO = True
 
 
 class ProdConfig(Config):
     ENV = "production"
+    DEBUG = False
     SQLALCHEMY_DATABASE_URI = 'sqlite:///PROD_RETAIL.db'
     SQLALCHEMY_ECHO = False
     
